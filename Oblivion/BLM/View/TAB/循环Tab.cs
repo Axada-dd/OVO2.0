@@ -27,7 +27,9 @@ public static class 循环Tab
 
         if (ImGui.Button("获取咏速"))
         {
-            LogHelper.Print($"{GcdCalculator.GetSpell()}");
+            GcdCalculator.CalculateGcd(Helper.有buff(737), out var mainGcd,out var altGcdResult);
+            LogHelper.Print($"{mainGcd}");
+            LogHelper.Print($"{altGcdResult}");
         }
         
         ImGui.Separator();
