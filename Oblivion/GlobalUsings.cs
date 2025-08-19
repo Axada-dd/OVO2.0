@@ -7,3 +7,4 @@ global using AEAssist.Extension;
 global using AEAssist.Helper;
 global using Oblivion.BLM.SlotResolver.Data;
 global using Oblivion.Common;
+global using Oblivion.BLM.View.QT;

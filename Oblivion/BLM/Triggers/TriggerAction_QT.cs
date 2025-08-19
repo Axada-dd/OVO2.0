@@ -2,6 +2,8 @@ using AEAssist.CombatRoutine.Trigger;
 using AEAssist.GUI;
 using ImGuiNET;
 using Oblivion.BLM.QtUI;
+using Oblivion.BLM.View;
+using Oblivion.BLM.View.QT;
 
 namespace Oblivion.BLM.Triggers;
 
@@ -20,7 +22,7 @@ public class TriggerActionQt : ITriggerAction
 
     public TriggerActionQt()
     {
-        _qtArray = QT.Instance.GetQtArray();
+        _qtArray = BlackMageQT.GetQtArray();
     }
 
     public bool Draw()
@@ -42,8 +44,8 @@ public class TriggerActionQt : ITriggerAction
 
     public bool Handle()
     {
-        QT.Instance.SetQt(Key, Value);
-        if (BLMSetting.Instance.TimeLinesDebug) LogHelper.Print("时间轴", $"{Key}QT => {Value}");
+        BlackMageQT.SetQt(Key, Value);
+        //if (BLMSetting.Instance.TimeLinesDebug) LogHelper.Print("时间轴", $"{Key}QT => {Value}");
         return true;
     }
 }

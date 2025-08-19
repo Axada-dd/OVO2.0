@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 using Oblivion.BLM.QtUI;
+using Oblivion.BLM.View.QT;
 
 namespace Oblivion.BLM.SlotResolver.Special;
 
@@ -10,7 +11,7 @@ public class 双星灵墨泉 : ISlotSequence
     public int StartCheck()
     {
         return -1;
-        if (!QT.Instance.GetQt("双星灵墨泉")) return -1;
+        if (!BlackMageQT.GetQt("双星灵墨泉")) return -1;
         if (!BLMHelper.火状态) return -2;
         if (BLMHelper.耀星层数 == 6) return -3;
         if (Core.Me.CurrentMp > 800) return -4;

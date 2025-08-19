@@ -7,7 +7,7 @@ public class BLMP6SAutoTarget
     public static IBattleChara? AutoTarget()
     {
         IBattleChara? currentTarget = ((IBattleChara)(object)Core.Me).GetCurrTarget();
-		if (!BLMSetting.Instance.Autotarget)
+		if (!BlackMageSetting.Instance.Autotarget)
 		{
 			return currentTarget;
 		}
@@ -33,7 +33,7 @@ public class BLMP6SAutoTarget
 		if (!自己有鱼 && 无目标鱼 != null && AI.Instance?.BattleData != null)
 		{
 			long battleTime = AI.Instance.BattleData.CurrBattleTimeInMs;
-			if (BLMSetting.Instance.AutoTargetMode == 3 || (BLMSetting.Instance.AutoTargetMode == 2 && battleTime > 300000) || (BLMSetting.Instance.AutoTargetMode == 1 && battleTime > 250000 && battleTime < 300000))
+			if (BlackMageSetting.Instance.AutoTargetMode == 3 || (BlackMageSetting.Instance.AutoTargetMode == 2 && battleTime > 300000) || (BlackMageSetting.Instance.AutoTargetMode == 1 && battleTime > 250000 && battleTime < 300000))
 			{
 				return 无目标鱼;
 			}

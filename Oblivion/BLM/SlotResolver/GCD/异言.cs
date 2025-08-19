@@ -19,9 +19,9 @@ public class 异言 : ISlotResolver
     public int Check()
     {
         if (Core.Me.Level < 80) return -80;
-        if (!QT.Instance.GetQt(QTkey.通晓)) return -2;
+        if (!BlackMageQT.GetQt(QTkey.通晓)) return -2;
         if (BLMHelper.三目标aoe() || BLMHelper.双目标aoe()) return -3;
-        if (QT.Instance.GetQt(QTkey.倾泻资源) && BLMHelper.通晓层数 > 0) return 666;
+        if (BlackMageQT.GetQt(QTkey.倾泻资源) && BLMHelper.通晓层数 > 0) return 666;
         if (Core.Me.Level >= 98)
         {
             if (BLMHelper.通晓层数 == 3 && BLMHelper.通晓剩余时间 <= 10000) return 2;

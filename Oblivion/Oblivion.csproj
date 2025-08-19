@@ -13,14 +13,12 @@
       </Reference>
       <Reference Include="Dalamud">
         <HintPath>C:\Users\melat\AppData\Roaming\XIVLauncherCN\addon\Hooks\dev\Dalamud.dll</HintPath>
+        <Private>False</Private>
       </Reference>
       <Reference Include="ImGui.NET">
         <HintPath>C:\Users\melat\AppData\Roaming\XIVLauncherCN\addon\Hooks\dev\ImGui.NET.dll</HintPath>
+        <Private>False</Private>
       </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="BLM\" />
     </ItemGroup>
 
 </Project>

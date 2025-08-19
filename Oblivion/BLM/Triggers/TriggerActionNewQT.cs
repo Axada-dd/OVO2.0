@@ -2,6 +2,7 @@ using System.Numerics;
 using AEAssist.CombatRoutine.Trigger;
 using ImGuiNET;
 using Oblivion.BLM.QtUI;
+using Oblivion.BLM.View.QT;
 
 namespace Oblivion.BLM.Triggers
 {
@@ -16,7 +17,7 @@ namespace Oblivion.BLM.Triggers
 
         public TriggerActionNewQt()
         {
-            qtArray = QT.Instance.GetQtArray();
+            qtArray = BlackMageQT.GetQtArray();
         }
 
         public bool Draw()
@@ -139,7 +140,7 @@ namespace Oblivion.BLM.Triggers
         {
             foreach (var kvp in qtValues)
             {
-                QT.Instance.SetQt(kvp.Key, kvp.Value);
+                BlackMageQT.SetQt(kvp.Key, kvp.Value);
             }
             return true;
         }

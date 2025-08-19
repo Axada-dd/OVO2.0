@@ -3,6 +3,7 @@ using AEAssist.CombatRoutine.Trigger;
 using AEAssist.GUI;
 using ImGuiNET;
 using Oblivion.BLM.QtUI;
+using Oblivion.BLM.View.QT;
 
 namespace Oblivion.BLM.Triggers;
 
@@ -20,7 +21,7 @@ public class TriggerCondQt : ITriggerCond
 
     public TriggerCondQt()
     {
-        _qtArray = QT.Instance.GetQtArray();
+        _qtArray = BlackMageQT.GetQtArray();
     }
 
     public bool Draw()
@@ -43,6 +44,6 @@ public class TriggerCondQt : ITriggerCond
 
     public bool Handle(ITriggerCondParams triggerCondParams)
     {
-        return QT.Instance.GetQt(Key) == Value;
+        return BlackMageQT.GetQt(Key) == Value;
     }
 }

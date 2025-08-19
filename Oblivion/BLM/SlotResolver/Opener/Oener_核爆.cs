@@ -23,8 +23,8 @@ public class Opener核爆 : IOpener
 
     public void InitCountDown(CountDownHandler countDownHandler)
     {
-        int startTime = (int)(BLMSetting.Instance.起手预读时间 * 1000);
-        if (BLMSetting.Instance.提前黑魔纹)
+        int startTime = (int)(BlackMageSetting.Instance.起手预读时间 * 1000);
+        if (BlackMageSetting.Instance.提前黑魔纹)
         {
 
             countDownHandler.AddAction(startTime + 600, Skill.黑魔纹, SpellTargetType.Self);
@@ -51,9 +51,9 @@ public class Opener核爆 : IOpener
         slot.Add(new Spell(Skill.即刻, SpellTargetType.Self));
         slot.Add(new Spell(Skill.详述, SpellTargetType.Self));
         slot.Add(new Spell(Skill.火四, SpellTargetType.Target));
-        if (QT.Instance.GetQt("爆发药"))
+        if (BlackMageQT.GetQt("爆发药"))
             slot.Add(Spell.CreatePotion());
-        if (!BLMSetting.Instance.提前黑魔纹)
+        if (!BlackMageSetting.Instance.提前黑魔纹)
             slot.Add(new Spell(Skill.黑魔纹, SpellTargetType.Self));
     }
 
@@ -91,7 +91,7 @@ public class Opener核爆 : IOpener
     private static void Step6(Slot slot)
     {
         slot.Add(new Spell(Skill.悖论, SpellTargetType.Target));
-        if(!QT.Instance.GetQt(QTkey.起手不三连))
+        if(!BlackMageQT.GetQt(QTkey.起手不三连))
             slot.Add(new Spell(Skill.三连, SpellTargetType.Self));
     }
 
@@ -99,7 +99,7 @@ public class Opener核爆 : IOpener
     {
         slot.Add(new Spell(Skill.核爆, SpellTargetType.Target));
         slot.Add(new Spell(Skill.耀星, SpellTargetType.Target));
-        if(!QT.Instance.GetQt(QTkey.起手不三连))
+        if(!BlackMageQT.GetQt(QTkey.起手不三连))
             slot.Add(new Spell(Skill.星灵移位, SpellTargetType.Self));
         else
         {

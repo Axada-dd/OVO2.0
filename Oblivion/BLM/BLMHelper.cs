@@ -1,5 +1,7 @@
 using AEAssist.JobApi;
 using Oblivion.BLM.QtUI;
+using Oblivion.BLM.View;
+using Oblivion.BLM.View.QT;
 
 namespace Oblivion.BLM;
 public static class BLMHelper
@@ -61,13 +63,13 @@ public static class BLMHelper
 
     public static bool 三目标aoe()
     {
-        if (!QT.Instance.GetQt(QTkey.Aoe)) return false;
+        if (!BlackMageQT.GetQt(QTkey.Aoe)) return false;
         var count = TargetHelper.GetNearbyEnemyCount(Core.Me.GetCurrTarget(), 25, 5);
         return count >= 3;
     }
     public static bool 双目标aoe()
     {
-        if (!QT.Instance.GetQt(QTkey.Aoe)) return false;
+        if (!BlackMageQT.GetQt(QTkey.Aoe)) return false;
         var count = TargetHelper.GetNearbyEnemyCount(Core.Me.GetCurrTarget(), 25, 5);
         if (count < 2) return false;
         if (三目标aoe()) return false;

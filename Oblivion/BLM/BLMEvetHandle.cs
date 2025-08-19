@@ -4,6 +4,8 @@ using AEAssist.IO;
 using AEAssist.JobApi;
 using AEAssist.MemoryApi;
 using Oblivion.BLM.QtUI;
+using Oblivion.BLM.View;
+using Oblivion.BLM.View.QT;
 
 namespace Oblivion.BLM;
 
@@ -71,7 +73,7 @@ public class BLMEvetHandle : IRotationEventHandler
         BattleData.Instance.需要瞬发gcd = false;
         BattleData.Instance.正在特殊循环中 = false;
         // 重置QT状态
-        QT.Reset();
+        BlackMageQT.Reset();
     }
 
 
@@ -86,7 +88,7 @@ public class BLMEvetHandle : IRotationEventHandler
         BattleData.Instance.正在特殊循环中 = false;
         
         // 处理Boss上天特殊情况
-        if (QT.Instance.GetQt("Boss上天"))
+        if (BlackMageQT.GetQt(QTkey.Boss上天))
         {
             if (BLMHelper.火状态)
             {
@@ -269,14 +271,14 @@ public class BLMEvetHandle : IRotationEventHandler
     public void OnExitRotation()
     {
         // 保存黑魔法师设置
-        BLMSetting.Instance.Save();
+        BlackMageSetting.Instance.Save();
         // 保存QT状态
-        BLMSetting.Instance.SaveQtStates(QT.Instance);
+        BlackMageSetting.Instance.SaveQtStates(baseUI.QT);
     }
 
     public void OnTerritoryChanged()
     {
         // 重置QT状态
-        QT.Reset();
+        baseUI.QT.Reset();
     }
 }

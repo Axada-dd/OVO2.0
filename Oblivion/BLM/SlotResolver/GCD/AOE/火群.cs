@@ -7,7 +7,7 @@ public class 火群 : ISlotResolver
     private uint _skillId = 0;
     private Spell? GetSpell()
     {
-        return QT.Instance.GetQt(QTkey.智能aoe目标)? _skillId.GetSpellBySmartTarget() : _skillId.GetSpell();
+        return BlackMageQT.GetQt(QTkey.智能aoe目标)? _skillId.GetSpellBySmartTarget() : _skillId.GetSpell();
     }
     public void Build(Slot slot)
     {

@@ -1,6 +1,9 @@
 using AEAssist.CombatRoutine.Trigger;
 using AEAssist.GUI;
 using Oblivion.BLM.QtUI;
+using Oblivion.BLM.View;
+using Oblivion.BLM.View.HotKey;
+using Oblivion.Utils.JobView.HotKey;
 
 namespace Oblivion.BLM.Triggers;
 
@@ -19,7 +22,7 @@ public class TriggerActionHotkey : ITriggerAction
 
     public TriggerActionHotkey()
     {
-        _hotkeyArray = QT.Instance.GetHotkeyArray();
+        _hotkeyArray = BlackMageHotkey.GetHotkeyArray();
     }
 
     public bool Draw()
@@ -37,8 +40,8 @@ public class TriggerActionHotkey : ITriggerAction
 
     public bool Handle()
     {
-        QT.Instance.SetHotkey(Key);
-        if (BLMSetting.Instance.TimeLinesDebug) LogHelper.Print("时间轴", $"使用hotkey => {Key}");
+        BlackMageHotkey.SetHotkey(Key);
+        //if (BLMSetting.Instance.TimeLinesDebug) LogHelper.Print("时间轴", $"使用hotkey => {Key}");
         return true;
     }
 }
