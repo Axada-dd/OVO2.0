@@ -17,6 +17,7 @@ public class baseUI
         UI.AddTab("说明", ReadmeTab.DrawReadme);
         UI.AddTab("设置", SettingTab.DrawSetting);
         UI.AddTab("DEV", Dev.DrawDev);
+        UI.AddTab("循环", 循环Tab.DrawDev);
         BlackMageQT.CreateQt();
         BlackMageHotkey.CreateHotkey();
     }

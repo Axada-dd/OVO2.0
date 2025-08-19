@@ -50,7 +50,7 @@ public class BLMEvetHandle : IRotationEventHandler
     {
         
         // 火状态下使用星灵移位
-        if (BLMHelper.火状态)
+        if (BLMHelper.火状态&&Skill.星灵移位.GetSpell().IsReadyWithCanCast())
         {
             await Skill.星灵移位.GetSpell(SpellTargetType.Self).Cast();
         }
@@ -59,6 +59,7 @@ public class BLMEvetHandle : IRotationEventHandler
         if (BLMHelper.冰状态 && (BLMHelper.冰层数 < 3 || BLMHelper.冰针 < 3 || Core.Me.CurrentMp < 10000))
         {
             await Skill.灵极魂.GetSpell(SpellTargetType.Self).Cast();
+            await Task.Delay(100);
         }
         await Task.CompletedTask;
     }
@@ -78,7 +79,7 @@ public class BLMEvetHandle : IRotationEventHandler
         BattleData.ReBuildSettings();
     }
 
-
+    private int 转圈次数 = 0;
     public async Task OnNoTarget()
     {
         // 战斗时间小于10秒时不处理
@@ -92,15 +93,19 @@ public class BLMEvetHandle : IRotationEventHandler
         // 处理Boss上天特殊情况
         if (BlackMageQT.GetQt(QTkey.Boss上天))
         {
-            if (BLMHelper.火状态)
+            if (BLMHelper.火状态&&Skill.星灵移位.GetSpell().IsReadyWithCanCast())
             {
-                await Skill.灵极魂.GetSpell(SpellTargetType.Self).Cast();
+                await Skill.星灵移位.GetSpell(SpellTargetType.Self).Cast();
             }
 
             // 冰状态且条件满足时使用灵极魂
             if (BLMHelper.冰状态 && (BLMHelper.冰层数 < 3 || BLMHelper.冰针 < 3 || Core.Me.CurrentMp < 10000))
             {
-                await Skill.灵极魂.GetSpell(SpellTargetType.Self).Cast();
+                if(转圈次数<3)
+                {
+                    await Skill.灵极魂.GetSpell(SpellTargetType.Self).Cast();
+                    转圈次数++;
+                }
             }
         }
         await Task.CompletedTask;
@@ -111,16 +116,18 @@ public class BLMEvetHandle : IRotationEventHandler
     {
         if (_gcdSpellIds.Contains(spell.Id))
             BattleData.Instance.已使用瞬发 = GCDHelper.GetGCDCooldown() >= (Core.Me.HasAura(Buffs.咏速Buff) ? 1500 : 1700);
+
     }
 
 
     public void AfterSpell(Slot slot, Spell spell)
     {
+
         if (释放技能时状态 == 1)
         {
             if (spell.Id == Skill.火二.GetActionChange() || spell.Id == Skill.火三 || spell.Id == Skill.星灵移位)
             {
-
+                转圈次数 = 0;
                 BattleData.Instance.上一轮循环 = new List<uint>(BattleData.Instance.冰状态gcd);
                 BattleData.Instance.冰状态gcd.Clear();
                 if (spell.Id == Skill.火二.GetActionChange() || spell.Id == Skill.火三)
@@ -263,7 +270,6 @@ public class BLMEvetHandle : IRotationEventHandler
         // 检查全局设置并给出建议
         if (Helper.GlobalSettings.NoClipGCD3)
             LogHelper.PrintError("建议不要在acr全局设置中勾选【全局能力技不卡GCD】选项");
-        
         // 重置开场标志
         BattleData.Instance.IsInnerOpener = false;
 
