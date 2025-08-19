@@ -1,6 +1,7 @@
 ﻿using AEAssist.MemoryApi;
 using ImGuiNET;
 using Oblivion.Utils.JobView;
+using Oblivion.Utils.Tools;
 
 namespace Oblivion.BLM.View.TAB;
 
@@ -24,6 +25,11 @@ public static class 循环Tab
             BlackMageSetting.Instance.Save();
         }
 
+        if (ImGui.Button("获取咏速"))
+        {
+            LogHelper.Print($"{GcdCalculator.GetSpell()}");
+        }
+        
         ImGui.Separator();
         if (BattleData.Instance.冰状态gcd.Count > 0)
         {

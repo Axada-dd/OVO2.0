@@ -7,6 +7,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <OutputPath>F:\FF14act\AEAssist 国服 1024\ACR\Oblivion</OutputPath>
@@ -21,6 +22,12 @@
       <Reference Include="Dalamud">
         <HintPath>C:\Users\melat\AppData\Roaming\XIVLauncherCN\addon\Hooks\dev\Dalamud.dll</HintPath>
         <Private>False</Private>
+      </Reference>
+      <Reference Include="ECommons">
+        <HintPath>..\..\..\..\FF14act\AEAssist 国服 1024\AEAssistCNVersion\AEAssist\ECommons.dll</HintPath>
+      </Reference>
+      <Reference Include="FFXIVClientStructs">
+        <HintPath>C:\Users\melat\AppData\Roaming\XIVLauncherCN\addon\Hooks\dev\FFXIVClientStructs.dll</HintPath>
       </Reference>
       <Reference Include="ImGui.NET">
         <HintPath>C:\Users\melat\AppData\Roaming\XIVLauncherCN\addon\Hooks\dev\ImGui.NET.dll</HintPath>
