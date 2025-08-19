@@ -16,7 +16,7 @@ public class BlackMageACR
     private const long Version = 202410172317;
     public static string settingFolderPath;
     
-    private static readonly List<SlotResolverData> _slotResolverData =
+    private static readonly List<SlotResolverData> SlotResolverData =
     [
         //GCD
         new (new TTK(),SlotMode.Gcd),
@@ -60,7 +60,7 @@ public class BlackMageACR
 
     public static Rotation Build()
     {
-        return new Rotation(_slotResolverData)
+        return new Rotation(SlotResolverData)
             {
                 TargetJob = Jobs.BlackMage,
                 AcrType = AcrType.HighEnd,
@@ -72,7 +72,8 @@ public class BlackMageACR
             .AddSlotSequences(特殊序列.Build())
             .AddTriggerAction(new TriggerActionQt(), new TriggerActionHotkey(), new TriggerActionNewQt())
             .AddTriggerCondition(new TriggerCondQt())
-            .AddCanPauseACRCheck((() => 1));
+            //.AddCanPauseACRCheck((() => -1))
+            ;
     }
     private static IOpener? GetOpener(uint level)
     {
@@ -89,4 +90,5 @@ public class BlackMageACR
         if (level >= 70 && level < 80) return new Opener_lv70();
         return null;
     }
+
 }

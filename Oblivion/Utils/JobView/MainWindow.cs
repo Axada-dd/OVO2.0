@@ -1,8 +1,10 @@
 ﻿using System.Numerics;
-using AEAssist.CombatRoutine.Module;
 using AEAssist.CombatRoutine.Trigger;
 using AEAssist.GUI;
 using ImGuiNET;
+
+// ReSharper disable FieldCanBeMadeReadOnly.Local
+#pragma warning disable CS9113 // 参数未读。
 
 namespace Oblivion.Utils.JobView;
 

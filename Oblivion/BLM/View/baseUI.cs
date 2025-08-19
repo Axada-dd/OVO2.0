@@ -13,7 +13,7 @@ public class baseUI
 
     public static void Build()
     {
-        QT = UI = new JobViewWindow(BlackMageSetting.Instance.JobViewSave, BlackMageSetting.Instance.Save, "OVO 黑魔");
+        QT = UI = new JobViewWindow(BlackMageSetting.Instance.JobViewSave, BlackMageSetting.Instance.Save, "OVO 黑魔", ref BlackMageSetting.Instance.HotKey设置, BlackMageHotkey.List);
         UI.AddTab("说明", ReadmeTab.DrawReadme);
         UI.AddTab("设置", SettingTab.DrawSetting);
         UI.AddTab("DEV", Dev.DrawDev);

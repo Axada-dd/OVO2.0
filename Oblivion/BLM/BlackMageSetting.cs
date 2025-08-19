@@ -1,5 +1,6 @@
 ﻿using AEAssist.IO;
 using Oblivion.Utils.JobView;
+using Oblivion.Utils.JobView.HotKey;
 
 namespace Oblivion.BLM;
 
@@ -64,7 +65,24 @@ public class BlackMageSetting
             QtUnVisibleList.Add(hiddenQt);
         }
     }
-    
+    public Dictionary<string, HotKetSpell> HotKey设置 = new()
+    {
+        {
+            "黑魔纹", new HotKetSpell("黑魔纹", Skill.黑魔纹, 1)
+        },
+        {
+            "三连咏唱", new HotKetSpell("三连咏唱", Skill.三连, 1)
+        },
+        {
+            "沉稳咏唱", new HotKetSpell("沉稳咏唱", Skill.沉稳, 1)
+        },
+        {
+            "混乱", new HotKetSpell("混乱",Skill.混乱,2)
+        },
+        {
+            "魔罩", new HotKetSpell("魔罩",Skill.魔罩,1)
+        }
+    };
     
     
     public JobViewSave JobViewSave { get; set; } = new()

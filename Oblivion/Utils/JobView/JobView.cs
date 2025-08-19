@@ -8,6 +8,7 @@ using AEAssist.Helper;
 using Dalamud.Interface.Utility.Raii;
 using ImGuiNET;
 using Oblivion.Utils.JobView.HotKey;
+using HotkeyWindow = Oblivion.Utils.JobView.HotKey.HotkeyWindow;
 
 namespace Oblivion.Utils.JobView;
 
@@ -15,53 +16,90 @@ public class JobViewWindow : IRotationUI
 {
     private Action saveSetting;
     private QtWindow qtWindow;
-    private HotKeyWindow hotKeyWindow;
+    private HotkeyWindow hotkeyWindow;
     private MainWindow mainWindow;
     private QtStyle style;
-    
+
     private float userFontGlobalScale = 1.17f;
 
     // 运行状态动画相关
     private float statusAnimationTime = 0f;
 
+
     public Dictionary<string, Action<JobViewWindow>> ExternalTab = new();
 
     public Action? UpdateAction;
-    
-    public JobViewWindow(JobViewSave jobViewSave, Action save, string name)
+
+    /// <summary>
+    /// 在当前职业循环插件中创建一个gui视图
+    /// </summary>
+    public JobViewWindow(JobViewSave jobViewSave, Action save, string name, ref Dictionary<string, HotKetSpell> Config,
+        Dictionary<string, uint> Spell)
     {
         style = new QtStyle(jobViewSave);
         saveSetting = save;
-        qtWindow = new QtWindow(jobViewSave,name);
-        hotKeyWindow = new HotKeyWindow(jobViewSave,name+" hotkey");
+        qtWindow = new QtWindow(jobViewSave, name);
+        hotkeyWindow = new HotkeyWindow(jobViewSave, name + " hotkey", ref Config, Spell, save);
         mainWindow = new MainWindow(ref style);
     }
 
+    public void CreateHotKey()
+    {
+        hotkeyWindow.CreateHotkey();
+    }
 
+    /// <summary>
+    /// 初始化主窗口风格
+    /// </summary>
     public void SetMainStyle()
     {
         style.SetMainStyle();
     }
 
+    /// <summary>
+    /// 注销主窗口风格
+    /// </summary>
     public void EndMainStyle()
     {
         style.EndMainStyle();
     }
 
+    /// <summary>
+    /// 增加一栏说明
+    /// </summary>
+    /// <param name="tabName"></param>
+    /// <param name="draw"></param>
     public void AddTab(string tabName, Action<JobViewWindow> draw)
     {
         ExternalTab.Add(tabName, draw);
     }
 
+    /// <summary>
+    /// 设置UI上的Update处理
+    /// </summary>
+    /// <param name="updateAction"></param>
     public void SetUpdateAction(Action updateAction)
     {
         UpdateAction = updateAction;
     }
 
+    /// <summary>
+    /// 添加新的qt控件
+    /// </summary>
+    /// <param name="name">qt的名称</param>
+    /// <param name="qtValueDefault">qt的bool默认值</param>
     public void AddQt(string name, bool qtValueDefault)
     {
         qtWindow.AddQt(name, qtValueDefault);
     }
+
+
+    /// <summary>
+    /// 添加新的qt控件，并且自定义方法
+    /// </summary>
+    /// <param name="name">qt的名称</param>
+    /// <param name="qtValueDefault">qt的bool默认值</param>
+    /// <param name="action">按下时触发的方法</param>
     public void AddQt(string name, bool qtValueDefault, Action<bool> action)
     {
         qtWindow.AddQt(name, qtValueDefault, action);
@@ -81,7 +119,8 @@ public class JobViewWindow : IRotationUI
     {
         qtWindow.RemoveAllQt();
     }
-    
+
+    // 设置每行按钮个数
     public void SetLineCount(int count)
     {
         if (count < 1)
@@ -162,7 +201,7 @@ public class JobViewWindow : IRotationUI
     public void DrawHotkeyWindow()
     {
         // 使用现代化Hotkey窗口
-        hotKeyWindow.DrawHotkeyWindow(style);
+        hotkeyWindow.DrawHotkeyWindow(style);
     }
 
     /// <summary>
@@ -170,25 +209,25 @@ public class JobViewWindow : IRotationUI
     /// </summary>
     public void AddHotkey(string name, IHotkeyResolver slot)
     {
-        hotKeyWindow.AddHotkey(name, slot);
+        hotkeyWindow.AddHotkey(name, slot);
     }
 
     /// <summary>
     /// 获取当前激活的hotkey列表
     /// </summary>
     /// <returns></returns>
-    public List<string> GetActiveList() => hotKeyWindow.ActiveList;
+    public List<string> GetActiveList() => hotkeyWindow.ActiveList;
 
     /// 设置上一次add添加的hotkey的toolTip
     public void SetHotkeyToolTip(string toolTip)
     {
-        hotKeyWindow.SetHotkeyToolTip(toolTip);
+        hotkeyWindow.SetHotkeyToolTip(toolTip);
     }
 
     /// 激活单个快捷键,mo无效
     public void SetHotkey(string name)
     {
-        hotKeyWindow.SetHotkey(name);
+        hotkeyWindow.SetHotkey(name);
     }
 
     /// 取消激活单个快捷键
@@ -200,13 +239,13 @@ public class JobViewWindow : IRotationUI
     /// 返回包含当前所有hotkey名字的数组
     public string[] GetHotkeyArray()
     {
-        return hotKeyWindow.GetHotkeyArray();
+        return hotkeyWindow.GetHotkeyArray();
     }
 
     /// 用于draw一个更改hotkey排序显示等设置的视图
     public void HotkeySettingView()
     {
-        hotKeyWindow.HotkeySettingView();
+        hotkeyWindow.HotkeySettingView();
     }
 
     /// <summary>
@@ -214,7 +253,7 @@ public class JobViewWindow : IRotationUI
     /// </summary>
     public void RunHotkey()
     {
-        hotKeyWindow.RunHotkey();
+        hotkeyWindow.RunHotkey();
         qtWindow.RunHotkey();
     }
 
@@ -303,13 +342,13 @@ public class JobViewWindow : IRotationUI
         }
 
         //hotkey按钮一行个数
-        input = hotKeyWindow.HotkeyLineCount;
+        input = hotkeyWindow.HotkeyLineCount;
         if (ImGui.InputInt("快捷键每行个数", ref input))
         {
             if (input < 1)
-                hotKeyWindow.HotkeyLineCount = 1;
+                hotkeyWindow.HotkeyLineCount = 1;
             else
-                hotKeyWindow.HotkeyLineCount = input;
+                hotkeyWindow.HotkeyLineCount = input;
         }
 
         //QT透明度
@@ -344,10 +383,10 @@ public class JobViewWindow : IRotationUI
 
         ImGui.Dummy(new Vector2(1, 3));
 
-        var lockWindow = hotKeyWindow.LockWindow;
+        var lockWindow = hotkeyWindow.LockWindow;
         if (ImGui.Checkbox("Hotkey窗口不可拖动", ref lockWindow))
         {
-            hotKeyWindow.LockWindow = lockWindow;
+            hotkeyWindow.LockWindow = lockWindow;
         }
 
         var lockQtWindow = qtWindow.LockWindow;

@@ -74,6 +74,8 @@ public class BLMEvetHandle : IRotationEventHandler
         BattleData.Instance.正在特殊循环中 = false;
         // 重置QT状态
         BlackMageQT.Reset();
+        BattleData.Reset();
+        BattleData.ReBuildSettings();
     }
 
 
@@ -274,6 +276,7 @@ public class BLMEvetHandle : IRotationEventHandler
         BlackMageSetting.Instance.Save();
         // 保存QT状态
         BlackMageSetting.Instance.SaveQtStates(baseUI.QT);
+        BattleData.Reset();
     }
 
     public void OnTerritoryChanged()

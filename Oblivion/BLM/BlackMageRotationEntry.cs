@@ -25,6 +25,7 @@ public class BlackMageRotationEntry: IRotationEntry
 
     public void Dispose()
     {
-        
+        BattleData.Reset();
+        GC.SuppressFinalize(this);
     }
 }

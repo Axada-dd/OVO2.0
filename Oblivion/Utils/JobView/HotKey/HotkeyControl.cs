@@ -2,11 +2,11 @@
 
 namespace Oblivion.Utils.JobView.HotKey;
 
-public class HotKeyControl
+public class HotkeyControl
 {
     internal readonly string Name;
     internal IHotkeyResolver Slot;
     internal string ToolTip = "";
 
-    internal HotKeyControl(string name) => Name = name;
+    internal HotkeyControl(string name) => Name = name;
 }

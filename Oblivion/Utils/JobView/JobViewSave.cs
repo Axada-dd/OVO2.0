@@ -23,8 +23,7 @@ public class JobViewSave
 
     /// 隐藏的qt列表
     public List<string> QtUnVisibleList = [];
-    /// 窗口拖动
-    public bool LockWindow;
+
 
     ///QT按钮一行有几个
     public int QtLineCount = 3;

@@ -9,13 +9,16 @@ using ImGuiNET;
 using Keys = AEAssist.Define.HotKey.Keys;
 namespace Oblivion.Utils.JobView.HotKey;
 
-public class HotKeyWindow(
+public class HotkeyWindow(
     JobViewSave save,
-    string name)
+    string name,
+    ref Dictionary<string, HotKetSpell> config,
+    Dictionary<string, uint> spell,
+    Action saveAction)
 {
      public JobViewSave save = save;
     /// 用于储存所有hotkey控件的字典
-    private Dictionary<string, HotKeyControl> HotkeyDict = new();
+    private Dictionary<string, HotkeyControl> HotkeyDict = new();
 
     /// 处于激活状态的hotkey列表
     public List<string> ActiveList = [];
@@ -30,6 +33,7 @@ public class HotKeyWindow(
     
     private Dictionary<string, long> lastActiveTime = new();
 
+    public Dictionary<string, HotKetSpell> HotKeyConfigs = config;
 
 
     /// 隐藏的hotkey列表
@@ -41,7 +45,21 @@ public class HotKeyWindow(
         get => save.HotkeyLineCount;
         set => save.HotkeyLineCount = value;
     }
-    
+
+    public void CreateHotkey()
+    {
+        if (HotKeyConfigs.Count <= 0) return;
+        foreach (var kvs in HotKeyConfigs)
+        {
+            AddHotkey(kvs.Value.Name,
+                new HotKeyResolver(kvs.Value.spell.GetSpell(), new HotKeyTarget(
+                    HotKeyTargetConfig.List[kvs.Value.target].Name,
+                    HotKeyTargetConfig.List[kvs.Value.target].SpellTargetType,
+                    HotKeyTargetConfig.List[kvs.Value.target].Func,
+                    HotKeyTargetConfig.List[kvs.Value.target].CharacterAgent)
+                ));
+        }
+    }
 
     /// <summary>
     /// 添加新的Hotkey控件
@@ -50,7 +68,7 @@ public class HotKeyWindow(
     {
         if (HotkeyDict.ContainsKey(hotkeyName))
             return;
-        var hotkey = new HotKeyControl(hotkeyName);
+        var hotkey =  new HotkeyControl(hotkeyName);
         HotkeyDict.Add(hotkeyName, hotkey);
         HotkeyDict[hotkeyName].Slot = slot;
         if (!HotkeyNameList.Contains(hotkeyName))
@@ -80,7 +98,7 @@ public class HotKeyWindow(
     }
     
     /// 获取Hotkey控件
-    public HotKeyControl? GetHotkey(string name)
+    public HotkeyControl? GetHotkey(string name)
     {
         return HotkeyDict.TryGetValue(name, out var control) ? control : null;
     }
@@ -99,13 +117,122 @@ public class HotKeyWindow(
     public void DrawHotkeyWindow(QtStyle style)
     {
         
+        HotKeyConfig.DrawHotKeyConfigView(this, ref HotKeyConfigs, spell,saveAction);
+        
+        if (!save.ShowHotkey)
+            return;
+        var num = HotkeyNameList.Count - HotkeyUnVisibleList.Count;
+        if (num <= 0)
+            return;
+
+        var now = TimeHelper.Now();
+
+        //更新按钮是否激活的状态
+        for (int i = ActiveList.Count - 1; i >= 0; i--)
+        {
+            var hotkeyName = ActiveList[i];
+            if (!HotkeyDict.ContainsKey(hotkeyName))
+                continue;
+            if (!lastActiveTime.TryGetValue(hotkeyName, out var lastActive))
+            {
+                continue;
+            }
+
+            // cd暂定0.5秒,也就是0.5秒内的重复点击无效
+            if (now - lastActive >= 500)
+            {
+                ActiveList.RemoveAt(i);
+            }
+        }
+
+        style.SetStyle();
+
+        var line = num / HotkeyLineCount;
+        if (num % HotkeyLineCount != 0)
+            line++;
+        var row = num < HotkeyLineCount ? num : HotkeyLineCount;
+
+        var hotKeySize = style.OverlayScale * save.QtHotkeySize;
+
+
+        var width = (row - 1) * 6 + 16 + hotKeySize.X * row;
+        var height = (line - 1) * 6 + 16 + hotKeySize.Y * line;
+        
+        // 设置窗口大小和位置
+        ImGui.SetNextWindowSize(new Vector2(width, (int)height));
+
+        var flag = LockWindow ? QtStyle.QtWindowFlag | ImGuiWindowFlags.NoMove : QtStyle.QtWindowFlag;
+        ImGui.Begin($"###Hotkey_Window{name}", flag);
+
+        var index = 0;
+        //画出控件
+        for (int i = 0; i < HotkeyNameList.Count; i++)
+        {
+
+            var hotkeyName = HotkeyNameList[i];
+
+            if (!HotkeyDict.ContainsKey(hotkeyName))
+            {
+
+                continue;
+            }
+
+            if (HotkeyUnVisibleList.Contains(hotkeyName))
+            {
+                continue;
+            }
+
+
+            var hotkey = HotkeyDict[hotkeyName];
+
+
+
+            ImGui.BeginChild($"###Hotkey_HotkeyControl{name + i}", hotKeySize, false, QtStyle.QtWindowFlag);
+            hotkey.Slot.Draw(hotKeySize);
+            //鼠标点击
+            if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
+            {
+                ImGui.BeginTooltip();
+                ImGui.Text($"{hotkeyName}");
+                if (hotkey.ToolTip != "")
+                    ImGui.Text($"{hotkey.ToolTip}");
+                ImGui.EndTooltip();
+
+                if (ImGui.IsMouseClicked(ImGuiMouseButton.Left))
+                {
+                    RunSlot(hotkey);
+                }
+            }
+
+            hotkey.Slot.DrawExternal(hotKeySize, ActiveList.Contains(hotkeyName));
+
+            if (HotkeyConfig.TryGetValue(hotkeyName, out var hotkeyConfig) && hotkeyConfig.Keys != Keys.None)
+            {
+                //显示快捷键
+                var text = HotkeySplice(hotkeyConfig.ModifierKey, hotkeyConfig.Keys);
+                ImGui.SetCursorPos(new Vector2(0, 0));
+                ImGui.Text(text);
+            }
+
+            ImGui.EndChild();
+
+            if (index % HotkeyLineCount != HotkeyLineCount - 1)
+            {
+                ImGui.SameLine();
+            }
+            index++;
+        }
+        
+        style.EndStyle();
+        
+        ImGui.End();
     }
 
     /// 用于draw一个更改qt排序显示等设置的视图
     public void HotkeySettingView()
     {
         ImGui.Checkbox("显示热键栏", ref save.ShowHotkey);
-        ImGui.Checkbox("打开自定义Hotkey窗口", ref GlobalSetting.Instance.HotKey配置窗口);
+        //ImGui.Checkbox("打开自定义Hotkey窗口", ref GlobalSetting.Instance.HotKey配置窗口);
         ImGui.TextDisabled("   *左键拖动改变hotkey顺序，右键点击显示更多");
         for (var i = 0; i < HotkeyNameList.Count; i++)
         {
@@ -223,7 +350,7 @@ public class HotKeyWindow(
         return $"{md}{HotkeyFormat(key)}";
     }
 
-    private void RunSlot(HotKeyControl hotkey)
+    private void RunSlot(HotkeyControl hotkey)
     {
         if (hotkey.Slot.Check() < 0)
             return;

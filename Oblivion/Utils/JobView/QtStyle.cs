@@ -6,7 +6,7 @@ namespace Oblivion.Utils.JobView;
 
 public class QtStyle
 {
-     // 保存对JobViewSave的引用
+    // 保存对JobViewSave的引用
     public JobViewSave Save { get; }
 
     // 现代主题实例 - 从保存的设置中读取，而不是硬编码

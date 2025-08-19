@@ -1,3 +1,6 @@
+using System.Collections.Concurrent;
+using Oblivion.Utils;
+
 namespace Oblivion.BLM;
 
 public class BattleData
@@ -31,6 +34,34 @@ public class BattleData
     public bool 压缩冰悖论 = false;
     public bool 压缩火悖论 = false;
     public bool 核爆收尾 = false;
+    
+    public static ConcurrentDictionary<string, long> 技能内置cd = new ConcurrentDictionary<string, long>();
+    public static bool isChange;
+    public static bool isBattleDataStop;
 
+    public static void Reset()
+    {
+        技能内置cd = new ConcurrentDictionary<string, long>();
+        if (isBattleDataStop)
+        {
+            PlayerOptions.Instance.Stop = false;
+        }
+    }
+
+    public static void ReBuildSettings()
+    {
+        if (isChange)
+        {
+            isChange = false;
+            GlobalSetting.Build(BlackMageACR.settingFolderPath, "HSS", true);
+            BlackMageSetting.Build(BlackMageACR.settingFolderPath);
+        }
+    }
+
+    public static void Stop()
+    {
+        isBattleDataStop = true;
+        PlayerOptions.Instance.Stop = true;
+    }
 
 }

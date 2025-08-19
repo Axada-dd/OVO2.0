@@ -10,7 +10,7 @@ namespace Oblivion.Utils.JobView;
 
 public class QtWindow
 {
-     public JobViewSave save;
+    public JobViewSave save;
     public readonly string name;
 
     /// 用于储存所有qt控件的字典
