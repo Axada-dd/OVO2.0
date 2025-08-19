@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Reference Include="AEAssist">
+        <HintPath>..\..\..\..\FF14act\AEAssist 国服 1024\AEAssistCNVersion\AEAssist\AEAssist.dll</HintPath>
+        <Private>False</Private>
+      </Reference>
+      <Reference Include="Dalamud">
+        <HintPath>C:\Users\melat\AppData\Roaming\XIVLauncherCN\addon\Hooks\dev\Dalamud.dll</HintPath>
+      </Reference>
+      <Reference Include="ImGui.NET">
+        <HintPath>C:\Users\melat\AppData\Roaming\XIVLauncherCN\addon\Hooks\dev\ImGui.NET.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="BLM\" />
+    </ItemGroup>
+
+</Project>
