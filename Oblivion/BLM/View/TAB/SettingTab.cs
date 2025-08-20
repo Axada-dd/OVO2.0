@@ -5,6 +5,7 @@ using AEAssist.MemoryApi;
 using ImGuiNET;
 using Oblivion.BLM.SlotResolver.Opener;
 using Oblivion.BLM.SlotResolver.Special;
+using Oblivion.BLM.View;
 using Oblivion.Utils.JobView;
 
 namespace Oblivion.BLM.QtUI;
@@ -94,7 +95,18 @@ public static class SettingTab
         if (ImGui.CollapsingHeader("循环设置"))
         {
             ImGui.Text("以下所有设置都能在时间轴中控制，非轴作者可以不用在意这些设置，不改也已经是优秀循环了");
-            ImGui.Checkbox("关闭起手", ref BattleData.Instance.起手);
+            
+            if (ImGui.Checkbox("关闭起手", ref BlackMageSetting.Instance.起手))
+            {
+                BlackMageSetting.Instance.Save();
+            }
+            if(ImGui.Checkbox("FATE/CE模式", ref BlackMageSetting.Instance.FATE模式))
+            {
+                baseUI.QT.SetQt(QTkey.倾泻资源,true);
+                baseUI.QT.SetQt(QTkey.黑魔纹,false);
+                baseUI.QT.SetQt(QTkey.智能aoe目标,true);
+                BlackMageSetting.Instance.Save();
+            }
             ImGui.Checkbox("留下所有三连用于走位，只针对100级循环", ref BattleData.Instance.三连走位);
             ImGui.Checkbox("低等级aoe循环中会使用火二进火", ref BattleData.Instance.aoe火二);
             ImGui.Checkbox("使用特供循环，注意可能会被绿玩出警", ref BattleData.Instance.特供循环);

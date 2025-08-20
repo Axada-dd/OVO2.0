@@ -24,7 +24,8 @@ public class BlackMageSetting
     public int AutoTargetMode = 0;
     public bool 提前黑魔纹 = false;
     public int TTK阈值 = 12000; 
-    
+    public bool 起手 = false;
+    public bool FATE模式 = false;
     
     
     

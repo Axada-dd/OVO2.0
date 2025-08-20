@@ -26,9 +26,9 @@ public class BattleData
     
     
     //循环控制
+
     public bool 三连走位 = false;
     public bool 即刻三连无移动判断 = false;
-    public bool 起手 = false;
     public bool aoe火二 = false;
     public bool 特供循环 = false;
     public bool 压缩冰悖论 = false;

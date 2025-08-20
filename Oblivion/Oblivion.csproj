@@ -34,5 +34,8 @@
         <Private>False</Private>
       </Reference>
     </ItemGroup>
+    <ItemGroup>
+      <PackageReference Include="AEAssist.NET" Version="1.0.14" />
+    </ItemGroup>
 
 </Project>
