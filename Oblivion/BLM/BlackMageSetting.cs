@@ -26,7 +26,7 @@ public class BlackMageSetting
     public int TTK阈值 = 12000; 
     public bool 起手 = false;
     public bool FATE模式 = false;
-    
+    public int 无目标等待时间 = 1000;
     
     
     public Dictionary<string, bool> QtStates { get; set; } = new Dictionary<string, bool>();

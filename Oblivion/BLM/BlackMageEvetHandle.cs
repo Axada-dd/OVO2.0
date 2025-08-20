@@ -56,7 +56,7 @@ public class BlackMageEvetHandle : IRotationEventHandler
         }
 
         // 冰状态且条件满足时使用灵极魂
-        if (BlackMageHelper.冰状态 && (BlackMageHelper.冰层数 < 3 || BlackMageHelper.冰针 < 3 || Core.Me.CurrentMp < 10000))
+        if (BlackMageHelper.冰状态 && (BlackMageHelper.冰层数 < 3 || BlackMageHelper.冰针 < 3 || Core.Me.CurrentMp < 10000)&&!使用灵极魂)
         {
             await Skill.灵极魂.GetSpell(SpellTargetType.Self).Cast();
             使用灵极魂 = true;
@@ -79,21 +79,36 @@ public class BlackMageEvetHandle : IRotationEventHandler
         BattleData.ReBuildSettings();
     }
 
+    private long 无目标开始时间 = 0;
     private int 转圈次数 = 0;
+    private long 上次灵极魂日志时间 = 0; // 新增变量记录上次日志时间
+
     public async Task OnNoTarget()
     {
         // 战斗时间小于10秒时不处理
         if (AI.Instance.BattleData.CurrBattleTimeInMs < 10 * 1000) return;
-        
+    
         // 重置技能状态标志
         BattleData.Instance.需要即刻 = false;
         BattleData.Instance.需要瞬发gcd = false;
         BattleData.Instance.正在特殊循环中 = false;
-        
+        // 初始化无目标时间戳（如果尚未设置）
+        if (无目标开始时间 == 0)
+        {
+            无目标开始时间 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            return; // 第一次检测到无目标，不执行任何操作
+        }
+
+        // 计算无目标持续时间
+        var 无目标持续时间 = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond) - 无目标开始时间;
+
+        // 如果无目标持续时间小于设定的延迟时间，则不执行上天逻辑
+        if (无目标持续时间 < BlackMageSetting.Instance.无目标等待时间) return;
+
         // 处理Boss上天特殊情况
         if (BlackMageQT.GetQt(QTkey.Boss上天))
         {
-            if (BlackMageHelper.火状态&&Skill.星灵移位.GetSpell().IsReadyWithCanCast())
+            if (BlackMageHelper.火状态 && Skill.星灵移位.GetSpell().IsReadyWithCanCast())
             {
                 await Skill.星灵移位.GetSpell(SpellTargetType.Self).Cast();
             }
@@ -101,11 +116,26 @@ public class BlackMageEvetHandle : IRotationEventHandler
             // 冰状态且条件满足时使用灵极魂
             if (BlackMageHelper.冰状态 && (BlackMageHelper.冰层数 < 3 || BlackMageHelper.冰针 < 3 || Core.Me.CurrentMp < 10000))
             {
+                /*// 检查是否需要输出日志（间隔1秒以上）
+                var 当前时间 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                if (当前时间 - 上次灵极魂日志时间 >= 1000)
+                {
+                    LogHelper.Print("准备释放灵极魂，当前冰层数：" + BlackMageHelper.冰层数 + 
+                                    "，冰针数：" + BlackMageHelper.冰针 + 
+                                    "，当前MP：" + Core.Me.CurrentMp);
+                    上次灵极魂日志时间 = 当前时间; // 更新上次日志时间
+                }*/
+
                 if(转圈次数<3)
                 {
                     await Skill.灵极魂.GetSpell(SpellTargetType.Self).Cast();
                     转圈次数++;
                 }
+            }
+            // 不再需要使用灵极魂时重置时间戳
+            else if (转圈次数 >= 3 || (BlackMageHelper.冰层数 >= 3 && BlackMageHelper.冰针 >= 3 && Core.Me.CurrentMp >= 10000))
+            {
+                无目标开始时间 = 0;
             }
         }
         await Task.CompletedTask;

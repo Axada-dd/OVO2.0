@@ -29,7 +29,7 @@ public class 星灵移位 : ISlotResolver
         }
         if (BlackMageHelper.火状态)
         {
-            if (Skill.墨泉.AbilityCoolDownInNextXgcDsWindow(2)||Skill.墨泉.IsReady() || Skill.墨泉.RecentlyUsed()) return -66;
+            if (Skill.墨泉.AbilityCoolDownInNextXgcDsWindow(BlackMageHelper.通晓层数)||Skill.墨泉.IsReady() || Skill.墨泉.RecentlyUsed()) return -66;
             if (Core.Me.CurrentMp >= 800) return -3;
             if (BlackMageHelper.耀星层数 == 6 && Core.Me.Level == 100) return -4;
             if (Helper.可瞬发()) return 1;

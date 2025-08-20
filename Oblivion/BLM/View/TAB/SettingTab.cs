@@ -100,10 +100,25 @@ public static class SettingTab
             {
                 BlackMageSetting.Instance.Save();
             }
+            ImGui.SameLine();
             if(ImGui.Checkbox("FATE/CE模式", ref BlackMageSetting.Instance.FATE模式))
             {
                 BlackMageSetting.Instance.Save();
             }
+            ImGui.Text("boss上天等待时间（毫秒）：");
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.BeginTooltip();
+                ImGui.Text("当目标丢失时，等待此时间后再进行转圈");
+                ImGui.EndTooltip();
+            }
+            int 无目标等待时间 = BlackMageSetting.Instance.无目标等待时间;
+            if (ImGui.InputInt("##无目标等待时间", ref 无目标等待时间, 1000, 5000))
+            {
+                BlackMageSetting.Instance.无目标等待时间 = 无目标等待时间;
+                BlackMageSetting.Instance.Save();
+            }
+            ImGui.Text("以下设置每次战斗都会重置:");
             ImGui.Checkbox("留下所有三连用于走位，只针对100级循环", ref BattleData.Instance.三连走位);
             ImGui.Checkbox("低等级aoe循环中会使用火二进火", ref BattleData.Instance.aoe火二);
             ImGui.Checkbox("使用特供循环，注意可能会被绿玩出警", ref BattleData.Instance.特供循环);

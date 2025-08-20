@@ -21,7 +21,8 @@ public class 秽浊 : ISlotResolver
     {
         if (!BlackMageQT.GetQt(QTkey.通晓)) return -5;
         if (!BlackMageHelper.双目标aoe() && !BlackMageHelper.三目标aoe() && Core.Me.Level >= 80) return -100;
-        if ((BlackMageQT.GetQt(QTkey.倾泻资源)|| BlackMageSetting.Instance.FATE模式) && BlackMageHelper.通晓层数 > 0 ) return 666;
+        if (BlackMageHelper.通晓层数 <= 0) return -4;
+        if (BlackMageQT.GetQt(QTkey.倾泻资源)|| BlackMageSetting.Instance.FATE模式 ) return 666;
         if (Core.Me.Level >= 98)
         {
             if (BlackMageHelper.通晓层数 == 3 && BlackMageHelper.通晓剩余时间 <= 10000) return 2;
@@ -31,7 +32,7 @@ public class 秽浊 : ISlotResolver
                 if (Core.Me.CurrentMp < 800 && BlackMageHelper.耀星层数 != 6)
                 {
                     if (Skill.墨泉.技能CD() < 300 && Skill.墨泉.GetSpell().IsReadyWithCanCast()) return -3;
-                    if (Skill.墨泉.GetSpell().AbilityCoolDownInNextXgcDsWindow(2)) return 4;
+                    if (Skill.墨泉.GetSpell().AbilityCoolDownInNextXgcDsWindow(BlackMageHelper.通晓层数)) return 4;
                 }
             }
 
