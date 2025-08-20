@@ -25,6 +25,7 @@
       </Reference>
       <Reference Include="ECommons">
         <HintPath>..\..\..\..\FF14act\AEAssist 国服 1024\AEAssistCNVersion\AEAssist\ECommons.dll</HintPath>
+        <Private>False</Private>
       </Reference>
       <Reference Include="FFXIVClientStructs">
         <HintPath>C:\Users\melat\AppData\Roaming\XIVLauncherCN\addon\Hooks\dev\FFXIVClientStructs.dll</HintPath>

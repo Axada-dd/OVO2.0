@@ -31,7 +31,6 @@ public class Opener核爆 : IOpener
             countDownHandler.AddAction(spellTime + 600, Skill.黑魔纹, SpellTargetType.Self);
             countDownHandler.AddAction(spellTime, Skill.火三, SpellTargetType.Target);
             countDownHandler.AddAction(spellTime - 500, () => BattleData.Instance.IsInnerOpener = true);
-            countDownHandler.AddAction(spellTime - 2800, Skill.雷一.GetActionChange(), SpellTargetType.Target);
         }
         else
         {
@@ -39,7 +38,6 @@ public class Opener核爆 : IOpener
             var spellTime = (int)长读条 * 1000;
             countDownHandler.AddAction(spellTime, Skill.火三, SpellTargetType.Target);
             countDownHandler.AddAction(spellTime - 500, () => BattleData.Instance.IsInnerOpener = true);
-            countDownHandler.AddAction(spellTime - 3000, Skill.雷一.GetActionChange(), SpellTargetType.Target);
         }
         //countDownHandler.AddAction(1000, () => Core.Resolve<MemApiChatMessage>().Toast2("开始循环",1,1000));
     }
@@ -51,6 +49,8 @@ public class Opener核爆 : IOpener
     private static void Step1(Slot slot)
     {
         //LogHelper.Print("开始Step1");
+        slot.Add(new Spell(Skill.雷一.GetActionChange(), SpellTargetType.Target));
+
         slot.Add(new Spell(Skill.即刻, SpellTargetType.Self));
         slot.Add(new Spell(Skill.详述, SpellTargetType.Self));
         slot.Add(new Spell(Skill.火四, SpellTargetType.Target));
