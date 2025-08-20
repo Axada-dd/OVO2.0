@@ -20,6 +20,7 @@ public class 黑魔纹 : ISlotResolver
     public int Check()
     {
         if (!BlackMageQT.GetQt(QTkey.黑魔纹)) return -5;
+        if (BlackMageSetting.Instance.FATE模式) return -7;
         if (_skillId.RecentlyUsed(2000)) return -6;
         if (_skillId.GetSpell().Charges < 1) return -1;
         if (Helper.有buff(737)) return -3;

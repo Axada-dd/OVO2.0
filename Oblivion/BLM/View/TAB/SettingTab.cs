@@ -102,9 +102,6 @@ public static class SettingTab
             }
             if(ImGui.Checkbox("FATE/CE模式", ref BlackMageSetting.Instance.FATE模式))
             {
-                baseUI.QT.SetQt(QTkey.倾泻资源,true);
-                baseUI.QT.SetQt(QTkey.黑魔纹,false);
-                baseUI.QT.SetQt(QTkey.智能aoe目标,true);
                 BlackMageSetting.Instance.Save();
             }
             ImGui.Checkbox("留下所有三连用于走位，只针对100级循环", ref BattleData.Instance.三连走位);

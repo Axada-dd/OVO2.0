@@ -21,7 +21,7 @@ public class 秽浊 : ISlotResolver
     {
         if (!BlackMageQT.GetQt(QTkey.通晓)) return -5;
         if (!BLMHelper.双目标aoe() && !BLMHelper.三目标aoe() && Core.Me.Level >= 80) return -100;
-        if (BlackMageQT.GetQt(QTkey.倾泻资源) && BLMHelper.通晓层数 > 0) return 666;
+        if ((BlackMageQT.GetQt(QTkey.倾泻资源)|| BlackMageSetting.Instance.FATE模式) && BLMHelper.通晓层数 > 0 ) return 666;
         if (Core.Me.Level >= 98)
         {
             if (BLMHelper.通晓层数 == 3 && BLMHelper.通晓剩余时间 <= 10000) return 2;
