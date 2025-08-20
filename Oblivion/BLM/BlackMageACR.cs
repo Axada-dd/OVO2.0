@@ -68,7 +68,7 @@ public class BlackMageACR
                 MaxLevel = 100,
                 Description = "请打开悬浮窗查看设置"
             }.AddOpener(GetOpener)
-            .SetRotationEventHandler(new BLMEvetHandle())
+            .SetRotationEventHandler(new BlackMageEvetHandle())
             .AddSlotSequences(特殊序列.Build())
             .AddTriggerAction(new TriggerActionQt(), new TriggerActionHotkey(), new TriggerActionNewQt())
             .AddTriggerCondition(new TriggerCondQt())

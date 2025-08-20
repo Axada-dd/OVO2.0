@@ -13,7 +13,7 @@ public class Opener核爆 : IOpener
         if (BattleData.Instance.IsInnerOpener) return 1;
         if (Helper.是否在战斗中()) return -2;
         
-        if (!BlackMageSetting.Instance.起手&&Core.Me.CurrentMp == 10000&&!(BLMHelper.火状态 || BLMHelper.冰状态)) return 2;
+        if (!BlackMageSetting.Instance.起手&&Core.Me.CurrentMp == 10000&&!(BlackMageHelper.火状态 || BlackMageHelper.冰状态)) return 2;
         return -1;
     }
 

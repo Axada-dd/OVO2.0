@@ -23,10 +23,10 @@ public class 详述 : ISlotResolver
         if (!_skillId.GetSpell().IsReadyWithCanCast()) return -1;
         if (Core.Me.Level >= 98)
         {
-            if (BLMHelper.通晓层数 == 3) return -2;
-            if (BLMHelper.通晓层数 == 2)
+            if (BlackMageHelper.通晓层数 == 3) return -2;
+            if (BlackMageHelper.通晓层数 == 2)
             {
-                if (BLMHelper.通晓剩余时间 < 4000) return -3;
+                if (BlackMageHelper.通晓剩余时间 < 4000) return -3;
             }
             if (GCDHelper.GetGCDCooldown() < 500) return -4;
             return 1;
@@ -34,10 +34,10 @@ public class 详述 : ISlotResolver
 
         if (Core.Me.Level < 98)
         {
-            if (BLMHelper.通晓层数 == 2) return -2;
-            if (BLMHelper.通晓层数 == 1)
+            if (BlackMageHelper.通晓层数 == 2) return -2;
+            if (BlackMageHelper.通晓层数 == 1)
             {
-                if (BLMHelper.通晓剩余时间 < 4000) return -3;
+                if (BlackMageHelper.通晓剩余时间 < 4000) return -3;
             }
             if (GCDHelper.GetGCDCooldown() < 500) return -4;
             return 1;

@@ -4,7 +4,7 @@ using Oblivion.BLM.View;
 using Oblivion.BLM.View.QT;
 
 namespace Oblivion.BLM;
-public static class BLMHelper
+public static class BlackMageHelper
 {
     private static readonly List<uint> AoeSkill = [Skill.核爆, Skill.雷二.GetActionChange(), Skill.玄冰, Skill.冰冻, Skill.秽浊,Skill.耀星];
     public static bool 火状态 => Core.Resolve<JobApi_BlackMage>().InAstralFire;
@@ -98,7 +98,7 @@ public static class BLMHelper
         if (提前补dot() && Helper.有buff(Buffs.雷云)) return aoe ? Skill.雷二.GetActionChange() : Skill.雷一.GetActionChange();
         if (Skill.即刻.GetSpell().Cooldown.TotalMilliseconds > 0 && Skill.三连.GetSpell().Charges < 1)
         {
-            if (Helper.有buff(Buffs.火苗)&&BLMHelper.火状态) return Skill.火三;
+            if (Helper.有buff(Buffs.火苗)&&BlackMageHelper.火状态) return Skill.火三;
             if (Helper.有buff(Buffs.雷云)) return aoe ? Skill.雷二 : Skill.雷一;
         }
         return 0;

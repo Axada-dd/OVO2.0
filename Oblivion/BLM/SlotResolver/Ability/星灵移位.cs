@@ -20,21 +20,21 @@ public class 星灵移位 : ISlotResolver
     public int Check()
     {
         if (_skillId.GetSpell().Cooldown.TotalMilliseconds > 0) return -1;
-        if (!BLMHelper.冰状态 && !BLMHelper.火状态) return -2;
+        if (!BlackMageHelper.冰状态 && !BlackMageHelper.火状态) return -2;
         if (BlackMageQT.GetQt(QTkey.TTK))
         {
             if (Core.Me.Level < 90) return -90;
-            if (BLMHelper.火状态 && Core.Me.CurrentMp < 800) return 88;
-            if (BLMHelper.冰状态 && !BLMHelper.悖论指示 ) return 99;
+            if (BlackMageHelper.火状态 && Core.Me.CurrentMp < 800) return 88;
+            if (BlackMageHelper.冰状态 && !BlackMageHelper.悖论指示 ) return 99;
         }
-        if (BLMHelper.火状态)
+        if (BlackMageHelper.火状态)
         {
             if (Skill.墨泉.AbilityCoolDownInNextXgcDsWindow(2)||Skill.墨泉.IsReady() || Skill.墨泉.RecentlyUsed()) return -66;
             if (Core.Me.CurrentMp >= 800) return -3;
-            if (BLMHelper.耀星层数 == 6 && Core.Me.Level == 100) return -4;
+            if (BlackMageHelper.耀星层数 == 6 && Core.Me.Level == 100) return -4;
             if (Helper.可瞬发()) return 1;
             if (Core.Me.Level < 90) return -90;
-            if (BLMHelper.三目标aoe() || BLMHelper.双目标aoe()) return 234;
+            if (BlackMageHelper.三目标aoe() || BlackMageHelper.双目标aoe()) return 234;
             if (Core.Me.Level < 100 ) return -100;
             if (BattleData.Instance.三连走位 &&!Skill.即刻.AbilityCoolDownInNextXgcDsWindow(1) ) return -5;
             if (!Helper.可瞬发() && !Skill.即刻.AbilityCoolDownInNextXgcDsWindow(1) &&
@@ -43,16 +43,16 @@ public class 星灵移位 : ISlotResolver
             
         }
 
-        if (BLMHelper.冰状态)
+        if (BlackMageHelper.冰状态)
         {
-            if (BLMHelper.三目标aoe() || BLMHelper.双目标aoe())
+            if (BlackMageHelper.三目标aoe() || BlackMageHelper.双目标aoe())
             {
-                if (BLMHelper.冰针 != 3) return -6;
+                if (BlackMageHelper.冰针 != 3) return -6;
                 if (_skillId.GetSpell().IsReadyWithCanCast()) return 21;
             }
-            if (BLMHelper.悖论指示 && !BattleData.Instance.压缩冰悖论) return -3;
-            if (BLMHelper.冰层数 != 3) return -4;
-            if (BLMHelper.冰针 != 3) return -6;
+            if (BlackMageHelper.悖论指示 && !BattleData.Instance.压缩冰悖论) return -3;
+            if (BlackMageHelper.冰层数 != 3) return -4;
+            if (BlackMageHelper.冰针 != 3) return -6;
             if (Core.Me.Level < 90)
             {
                 if (Helper.有buff(Buffs.火苗))return 72;

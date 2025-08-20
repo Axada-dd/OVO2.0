@@ -19,10 +19,10 @@ public class TTK : ISlotResolver
     private uint GetSkillId()
     {
         if (!BlackMageQT.GetQt(QTkey.TTK)) return 0;
-        if (BLMHelper.通晓层数 > 0) return BLMHelper.三目标aoe() || BLMHelper.双目标aoe() ? Skill.秽浊 : Skill.异言;
-        if (BLMHelper.悖论指示) return Skill.悖论;
-        if (BLMHelper.耀星层数 == 6) return Skill.耀星;
-        if (Core.Me.CurrentMp >= 800 && BLMHelper.火状态 && Core.Me.Level >= 100 ) return Skill.绝望;
+        if (BlackMageHelper.通晓层数 > 0) return BlackMageHelper.三目标aoe() || BlackMageHelper.双目标aoe() ? Skill.秽浊 : Skill.异言;
+        if (BlackMageHelper.悖论指示) return Skill.悖论;
+        if (BlackMageHelper.耀星层数 == 6) return Skill.耀星;
+        if (Core.Me.CurrentMp >= 800 && BlackMageHelper.火状态 && Core.Me.Level >= 100 ) return Skill.绝望;
         return 0;
     }
     public int Check()

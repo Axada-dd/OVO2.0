@@ -27,8 +27,8 @@ public class 核爆补耀星 : ISlotResolver
 
     private uint UseSkill()
     {
-        if (BLMHelper.冰针 >= 1 && (int)Core.Me.CurrentMp * 0.333 >= 800) return Skill.核爆;
-        if (BLMHelper.耀星层数 + 3 >= 6) return Skill.核爆;
+        if (BlackMageHelper.冰针 >= 1 && (int)Core.Me.CurrentMp * 0.333 >= 800) return Skill.核爆;
+        if (BlackMageHelper.耀星层数 + 3 >= 6) return Skill.核爆;
         return Skill.绝望;
     }
 

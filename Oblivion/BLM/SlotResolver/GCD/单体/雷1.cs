@@ -18,11 +18,11 @@ public class 雷1 : ISlotResolver
 
     public int Check()
     {
-        if (BLMHelper.双目标aoe()||BLMHelper.三目标aoe()) return -100;
+        if (BlackMageHelper.双目标aoe()||BlackMageHelper.三目标aoe()) return -100;
         if (!BlackMageQT.GetQt(QTkey.Dot)) return -3;
         if (BlackMageQT.GetQt(QTkey.TTK)) return -5;
         if (BattleData.Instance.正在特殊循环中) return -4;
-        if (BLMHelper.补dot() && Core.Me.HasAura(Buffs.雷云)) return 1;
+        if (BlackMageHelper.补dot() && Core.Me.HasAura(Buffs.雷云)) return 1;
         return -99;
     }
 }

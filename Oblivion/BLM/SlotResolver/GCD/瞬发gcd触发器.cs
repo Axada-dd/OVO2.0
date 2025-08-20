@@ -16,7 +16,7 @@ public class 瞬发gcd触发器 : ISlotResolver
     {
         if (Helper.可瞬发()) return -2;
         if (!BattleData.Instance.需要瞬发gcd) return -3;
-        _skillId = BLMHelper.可用瞬发();
+        _skillId = BlackMageHelper.可用瞬发();
         if (_skillId == 0) return -4;
         if (_skillId.RecentlyUsed()) return -5;
         return 1;

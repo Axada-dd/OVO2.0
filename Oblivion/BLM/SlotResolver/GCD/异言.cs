@@ -20,15 +20,15 @@ public class 异言 : ISlotResolver
     {
         if (Core.Me.Level < 80) return -80;
         if (!BlackMageQT.GetQt(QTkey.通晓)) return -2;
-        if (BLMHelper.三目标aoe() || BLMHelper.双目标aoe()) return -3;
-        if ((BlackMageQT.GetQt(QTkey.倾泻资源)|| BlackMageSetting.Instance.FATE模式) && BLMHelper.通晓层数 > 0 ) return 666;
+        if (BlackMageHelper.三目标aoe() || BlackMageHelper.双目标aoe()) return -3;
+        if ((BlackMageQT.GetQt(QTkey.倾泻资源)|| BlackMageSetting.Instance.FATE模式) && BlackMageHelper.通晓层数 > 0 ) return 666;
         if (Core.Me.Level >= 98)
         {
-            if (BLMHelper.通晓层数 == 3 && BLMHelper.通晓剩余时间 <= 10000) return 2;
-            if (BLMHelper.通晓层数 == 3 && Skill.详述.GetSpell().AbilityCoolDownInNextXgcDsWindow(1)) return 3;
-            if (BLMHelper.火状态)
+            if (BlackMageHelper.通晓层数 == 3 && BlackMageHelper.通晓剩余时间 <= 10000) return 2;
+            if (BlackMageHelper.通晓层数 == 3 && Skill.详述.GetSpell().AbilityCoolDownInNextXgcDsWindow(1)) return 3;
+            if (BlackMageHelper.火状态)
             {
-                if (Core.Me.CurrentMp < 800 && BLMHelper.耀星层数 != 6)
+                if (Core.Me.CurrentMp < 800 && BlackMageHelper.耀星层数 != 6)
                 {
                     if (Skill.墨泉.技能CD() < 300 && Skill.墨泉.GetSpell().IsReadyWithCanCast()) return -3;
                     if (Skill.墨泉.GetSpell().AbilityCoolDownInNextXgcDsWindow(2)) return 4;
@@ -38,8 +38,8 @@ public class 异言 : ISlotResolver
 
         if (Core.Me.Level >= 80 && Core.Me.Level < 98)
         {
-            if (BLMHelper.通晓层数 == 2 && BLMHelper.通晓剩余时间 < 8000) return 2;
-            if (BLMHelper.通晓层数 == 2 && Core.Me.Level >= 86 && Skill.详述.GetSpell().AbilityCoolDownInNextXgcDsWindow(1)) return 3;
+            if (BlackMageHelper.通晓层数 == 2 && BlackMageHelper.通晓剩余时间 < 8000) return 2;
+            if (BlackMageHelper.通晓层数 == 2 && Core.Me.Level >= 86 && Skill.详述.GetSpell().AbilityCoolDownInNextXgcDsWindow(1)) return 3;
         }
         
         

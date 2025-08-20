@@ -13,7 +13,7 @@ namespace Oblivion.BLM;
 /// 黑魔法师(BLM)职业的事件处理类，实现了IRotationEventHandler接口
 /// 负责处理黑魔法师战斗中的各种事件和状态更新
 /// </summary>
-public class BLMEvetHandle : IRotationEventHandler
+public class BlackMageEvetHandle : IRotationEventHandler
 {
     private int 释放技能时状态 = 0;
     /// <summary>
@@ -45,21 +45,21 @@ public class BLMEvetHandle : IRotationEventHandler
     {
         Skill.悖论, Skill.冰三, Skill.冰澈, Skill.冰冻.GetActionChange(), Skill.玄冰, Skill.灵极魂
     };
-
+    private bool 使用灵极魂 = false;
     public async Task OnPreCombat()
     {
         
         // 火状态下使用星灵移位
-        if (BLMHelper.火状态&&Skill.星灵移位.GetSpell().IsReadyWithCanCast())
+        if (BlackMageHelper.火状态&&Skill.星灵移位.GetSpell().IsReadyWithCanCast())
         {
             await Skill.星灵移位.GetSpell(SpellTargetType.Self).Cast();
         }
 
         // 冰状态且条件满足时使用灵极魂
-        if (BLMHelper.冰状态 && (BLMHelper.冰层数 < 3 || BLMHelper.冰针 < 3 || Core.Me.CurrentMp < 10000))
+        if (BlackMageHelper.冰状态 && (BlackMageHelper.冰层数 < 3 || BlackMageHelper.冰针 < 3 || Core.Me.CurrentMp < 10000))
         {
             await Skill.灵极魂.GetSpell(SpellTargetType.Self).Cast();
-            await Task.Delay(100);
+            使用灵极魂 = true;
         }
         await Task.CompletedTask;
     }
@@ -93,13 +93,13 @@ public class BLMEvetHandle : IRotationEventHandler
         // 处理Boss上天特殊情况
         if (BlackMageQT.GetQt(QTkey.Boss上天))
         {
-            if (BLMHelper.火状态&&Skill.星灵移位.GetSpell().IsReadyWithCanCast())
+            if (BlackMageHelper.火状态&&Skill.星灵移位.GetSpell().IsReadyWithCanCast())
             {
                 await Skill.星灵移位.GetSpell(SpellTargetType.Self).Cast();
             }
 
             // 冰状态且条件满足时使用灵极魂
-            if (BLMHelper.冰状态 && (BLMHelper.冰层数 < 3 || BLMHelper.冰针 < 3 || Core.Me.CurrentMp < 10000))
+            if (BlackMageHelper.冰状态 && (BlackMageHelper.冰层数 < 3 || BlackMageHelper.冰针 < 3 || Core.Me.CurrentMp < 10000))
             {
                 if(转圈次数<3)
                 {
@@ -128,6 +128,7 @@ public class BLMEvetHandle : IRotationEventHandler
             if (spell.Id == Skill.火二.GetActionChange() || spell.Id == Skill.火三 || spell.Id == Skill.星灵移位)
             {
                 转圈次数 = 0;
+                使用灵极魂 = false;
                 BattleData.Instance.上一轮循环 = new List<uint>(BattleData.Instance.冰状态gcd);
                 BattleData.Instance.冰状态gcd.Clear();
                 if (spell.Id == Skill.火二.GetActionChange() || spell.Id == Skill.火三)
@@ -168,10 +169,10 @@ public class BLMEvetHandle : IRotationEventHandler
         }
         if (spell.Id == Skill.星灵移位)
         {
-            if (BLMHelper.冰状态) 释放技能时状态 = 1;
-            else if (BLMHelper.火状态) 释放技能时状态 = 2;
+            if (BlackMageHelper.冰状态) 释放技能时状态 = 1;
+            else if (BlackMageHelper.火状态) 释放技能时状态 = 2;
             else 释放技能时状态 = 0;
-            if (BLMHelper.冰状态 && BLMHelper.冰针 == 3)
+            if (BlackMageHelper.冰状态 && BlackMageHelper.冰针 == 3)
             {
                 BattleData.Instance.三冰针进冰 = true;
             }
@@ -186,8 +187,8 @@ public class BLMEvetHandle : IRotationEventHandler
             // 根据GCD冷却时间判断是否使用了瞬发技能
             // 有咏速buff时阈值为1500ms，否则为1700ms
             BattleData.Instance.已使用瞬发 = GCDHelper.GetGCDCooldown() >= (Core.Me.HasAura(Buffs.咏速Buff) ? 1500 : 1700);
-            if (BLMHelper.冰状态) 释放技能时状态 = 1;
-            else if (BLMHelper.火状态) 释放技能时状态 = 2;
+            if (BlackMageHelper.冰状态) 释放技能时状态 = 1;
+            else if (BlackMageHelper.火状态) 释放技能时状态 = 2;
             else 释放技能时状态 = 0;
             
         }
@@ -226,10 +227,10 @@ public class BLMEvetHandle : IRotationEventHandler
         if (Helper.可瞬发()) BattleData.Instance.需要即刻 = false;
         
         // 处理角色发呆状态
-        if (BLMHelper.在发呆())
+        if (BlackMageHelper.在发呆())
         {
             // 有可用瞬发技能时设置需要瞬发GCD标志
-            if (BLMHelper.可用瞬发() != 0)
+            if (BlackMageHelper.可用瞬发() != 0)
                 BattleData.Instance.需要瞬发gcd = true;
             else
             {

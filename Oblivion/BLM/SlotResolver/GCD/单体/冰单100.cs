@@ -18,32 +18,32 @@ public class 冰单100 :ISlotResolver
 
     private uint GetSkillId()
     {
-        if (BLMHelper.火状态 && Core.Me.CurrentMp < 800 && BLMHelper.耀星层数 != 6)
+        if (BlackMageHelper.火状态 && Core.Me.CurrentMp < 800 && BlackMageHelper.耀星层数 != 6)
         {
             if (BattleData.Instance.前一gcd is Skill.冰澈 or Skill.玄冰 && BattleData.Instance.前一能力技 == Skill.星灵移位) return 0;
             return Skill.冰三;
         }
-        if (BLMHelper.冰状态)
+        if (BlackMageHelper.冰状态)
         {
-            if (BLMHelper.冰层数 < 3)
+            if (BlackMageHelper.冰层数 < 3)
             {
-                if (BLMHelper.悖论指示 && (Skill.即刻.GetSpell().AbilityCoolDownInNextXgcDsWindow(1) ||
+                if (BlackMageHelper.悖论指示 && (Skill.即刻.GetSpell().AbilityCoolDownInNextXgcDsWindow(1) ||
                                        Skill.三连.GetSpell().IsReadyWithCanCast()) && !Helper.可瞬发())
                     return Skill.悖论;
                 return Skill.冰三;
             }
-            if (BLMHelper.冰针 < 3 || BattleData.Instance.三冰针进冰) return Skill.冰澈;
-            if (BLMHelper.悖论指示 && !BattleData.Instance.压缩冰悖论) return Skill.悖论;
+            if (BlackMageHelper.冰针 < 3 || BattleData.Instance.三冰针进冰) return Skill.冰澈;
+            if (BlackMageHelper.悖论指示 && !BattleData.Instance.压缩冰悖论) return Skill.悖论;
             return 0;
         }
 
-        if (!BLMHelper.冰状态 && !BLMHelper.火状态) return Skill.冰三;
+        if (!BlackMageHelper.冰状态 && !BlackMageHelper.火状态) return Skill.冰三;
         return 0;
     }
     public int Check()
     {
         if (Core.Me.Level != 100) return -100;
-        if (BLMHelper.三目标aoe() || BLMHelper.双目标aoe()) return -234;
+        if (BlackMageHelper.三目标aoe() || BlackMageHelper.双目标aoe()) return -234;
         if (Helper.IsMove&&!Helper.可瞬发()) return -99;
         _skillId = GetSkillId();
         if (_skillId == 0) return -1;
