@@ -19,7 +19,7 @@ public class 冰单90 :ISlotResolver
         if (BlackMageHelper.冰状态)
         {
             if (BlackMageHelper.冰层数 < 3) return Skill.冰三;
-            if (BlackMageHelper.冰针 < 3 || BattleData.Instance.三冰针进冰) return Skill.冰澈;
+            if (BlackMageHelper.冰针 < 3 || (BattleData.Instance.三冰针进冰&&Core.Me.CurrentMp<9800)) return Skill.冰澈;
             if (BlackMageHelper.悖论指示) return Skill.悖论;
             return 0;
         }
