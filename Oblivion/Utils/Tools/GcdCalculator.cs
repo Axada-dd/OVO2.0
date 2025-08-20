@@ -19,7 +19,7 @@ public static class GcdCalculator
     }
     
     
-    public static void CalculateGcd(bool 黑魔纹加速, out double 短读条, out double? 长读条)
+    public static void CalculateGcd(bool 黑魔纹加速, out double 短读条, out double 长读条)
     {
 
         var speed = GetSpellSpeed();

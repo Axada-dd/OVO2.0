@@ -1,5 +1,6 @@
 using AEAssist.CombatRoutine.Module.Opener;
 using Oblivion.BLM.QtUI;
+using Oblivion.Utils.Tools;
 
 namespace Oblivion.BLM.SlotResolver.Opener;
 
@@ -21,20 +22,22 @@ public class Opener57 : IOpener
 
     public void InitCountDown(CountDownHandler countDownHandler)
     {
-        int startTime = (int)(BlackMageSetting.Instance.起手预读时间 * 1000);
         if (BlackMageSetting.Instance.提前黑魔纹)
         {
-
-            countDownHandler.AddAction(startTime + 600, Skill.黑魔纹, SpellTargetType.Self);
-            countDownHandler.AddAction(startTime, Skill.火三, SpellTargetType.Target);
-            countDownHandler.AddAction(startTime - 500, () => BattleData.Instance.IsInnerOpener = true);
-            countDownHandler.AddAction(startTime - 2800, Skill.雷一.GetActionChange(), SpellTargetType.Target);
+            GcdCalculator.CalculateGcd(true,out var 短读条,out var 长读条 );
+            var spellTime = (int)长读条 * 1000;
+            countDownHandler.AddAction(spellTime + 600, Skill.黑魔纹, SpellTargetType.Self);
+            countDownHandler.AddAction(spellTime, Skill.火三, SpellTargetType.Target);
+            countDownHandler.AddAction(spellTime - 500, () => BattleData.Instance.IsInnerOpener = true);
+            countDownHandler.AddAction(spellTime - 2800, Skill.雷一.GetActionChange(), SpellTargetType.Target);
         }
         else
         {
-            countDownHandler.AddAction(startTime, Skill.火三, SpellTargetType.Target);
-            countDownHandler.AddAction(startTime - 500, () => BattleData.Instance.IsInnerOpener = true);
-            countDownHandler.AddAction(startTime - 3000, Skill.雷一.GetActionChange(), SpellTargetType.Target);
+            GcdCalculator.CalculateGcd(false,out var 短读条,out var 长读条 );
+            var spellTime = (int)长读条 * 1000;
+            countDownHandler.AddAction(spellTime, Skill.火三, SpellTargetType.Target);
+            countDownHandler.AddAction(spellTime - 500, () => BattleData.Instance.IsInnerOpener = true);
+            countDownHandler.AddAction(spellTime - 3000, Skill.雷一.GetActionChange(), SpellTargetType.Target);
         }
     }
     public List<Action<Slot>> Sequence { get; } =
