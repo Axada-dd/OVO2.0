@@ -9,14 +9,34 @@ using ImGuiNET;
 using Keys = AEAssist.Define.HotKey.Keys;
 namespace Oblivion.Utils.JobView.HotKey;
 
-public class HotkeyWindow(
-    JobViewSave save,
-    string name,
-    ref Dictionary<string, HotKetSpell> config,
-    Dictionary<string, uint> spell,
-    Action saveAction)
+public class HotkeyWindow()
 {
-     public JobViewSave save = save;
+
+    public string name;
+    public Dictionary<string, uint> spell;
+    public Dictionary<string, HotKetSpell> HotKeyConfigs;
+    public JobViewSave save;
+    public Action saveAction;
+    // 带参数的构造函数，必须调用主构造函数
+    public HotkeyWindow(JobViewSave save,
+        string name,
+        ref Dictionary<string, HotKetSpell> config,
+        Dictionary<string, uint> spell,
+        Action saveAction) : this() // 调用无参数主构造函数
+    {
+        this.save = save;
+        this.name = name;
+        this.HotKeyConfigs = config;
+        this.spell = spell;
+        this.saveAction = saveAction;
+    }
+
+    public HotkeyWindow(JobViewSave save, string name) : this() // 调用无参数主构造函数
+    {
+        this.save = save;
+        this.name = name;
+    }
+
     /// 用于储存所有hotkey控件的字典
     private Dictionary<string, HotkeyControl> HotkeyDict = new();
 
@@ -24,16 +44,15 @@ public class HotkeyWindow(
     public List<string> ActiveList = [];
 
     /// 动态按顺序储存hotkey名称的list，用于排序显示hotkey
-    public List<string> HotkeyNameList = [];
+    public List<string> HotkeyNameList => save.HotkeyNameList;
     // 记录控件名称和对应快捷键的字典
     public Dictionary<string, HotkeyConfig> HotkeyConfig => save.HotkeyConfig;
     
     ///窗口拖动
-    public bool LockWindow;
+    public bool LockWindow { get => save.LockHotkeyWindow; set => save.LockHotkeyWindow = value; } 
     
     private Dictionary<string, long> lastActiveTime = new();
 
-    public Dictionary<string, HotKetSpell> HotKeyConfigs = config;
 
 
     /// 隐藏的hotkey列表

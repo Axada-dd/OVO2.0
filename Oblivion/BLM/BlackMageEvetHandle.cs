@@ -1,4 +1,5 @@
 using AEAssist.CombatRoutine.Module.AILoop;
+using AEAssist.Define;
 using AEAssist.Function;
 using AEAssist.IO;
 using AEAssist.JobApi;
@@ -79,12 +80,12 @@ public class BlackMageEvetHandle : IRotationEventHandler
         BattleData.ReBuildSettings();
     }
 
-    private long 无目标开始时间 = 0;
     private int 转圈次数 = 0;
-    private long 上次灵极魂日志时间 = 0; // 新增变量记录上次日志时间
+
 
     public async Task OnNoTarget()
     {
+        _noTarget = true;
         // 战斗时间小于10秒时不处理
         if (AI.Instance.BattleData.CurrBattleTimeInMs < 10 * 1000) return;
     
@@ -92,15 +93,10 @@ public class BlackMageEvetHandle : IRotationEventHandler
         BattleData.Instance.需要即刻 = false;
         BattleData.Instance.需要瞬发gcd = false;
         BattleData.Instance.正在特殊循环中 = false;
-        // 初始化无目标时间戳（如果尚未设置）
-        if (无目标开始时间 == 0)
-        {
-            无目标开始时间 = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-            return; // 第一次检测到无目标，不执行任何操作
-        }
+
 
         // 计算无目标持续时间
-        var 无目标持续时间 = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond) - 无目标开始时间;
+        var 无目标持续时间 = (DateTime.Now - _lastCombatTime).TotalMilliseconds;
 
         // 如果无目标持续时间小于设定的延迟时间，则不执行上天逻辑
         if (无目标持续时间 < BlackMageSetting.Instance.无目标等待时间) return;
@@ -135,7 +131,7 @@ public class BlackMageEvetHandle : IRotationEventHandler
             // 不再需要使用灵极魂时重置时间戳
             else if (转圈次数 >= 3 || (BlackMageHelper.冰层数 >= 3 && BlackMageHelper.冰针 >= 3 && Core.Me.CurrentMp >= 10000))
             {
-                无目标开始时间 = 0;
+                
             }
         }
         await Task.CompletedTask;
@@ -249,10 +245,15 @@ public class BlackMageEvetHandle : IRotationEventHandler
         }
     }
 
-
+    private DateTime _lastCombatTime;
+    private bool _noTarget = false;
     public void OnBattleUpdate(int currTimeInMs)
     {
-        
+        if (!_noTarget )
+        {
+            _lastCombatTime = DateTime.Now;
+        }
+        if(Core.Me.InCombat()) _noTarget = false;
         // 可瞬发状态下不需要即刻
         if (Helper.可瞬发()) BattleData.Instance.需要即刻 = false;
         
@@ -318,6 +319,19 @@ public class BlackMageEvetHandle : IRotationEventHandler
 
     public void OnTerritoryChanged()
     {
+        if (Core.Resolve<MemApiMap>().GetCurrTerrId() == 1252)
+        {
+            BlackMageSetting.Instance.FATE模式 = true;
+            BlackMageSetting.Instance.起手 = true;
+            BlackMageSetting.Instance.Save();
+            LogHelper.Print("是新月岛");
+        }
+        else
+        {
+            BlackMageSetting.Instance.FATE模式 = false;
+            BlackMageSetting.Instance.起手 = false;
+            BlackMageSetting.Instance.Save();
+        }
         // 重置QT状态
         baseUI.QT.Reset();
     }

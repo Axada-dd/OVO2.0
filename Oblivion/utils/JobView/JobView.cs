@@ -19,7 +19,10 @@ public class JobViewWindow : IRotationUI
     private HotkeyWindow hotkeyWindow;
     private MainWindow mainWindow;
     private QtStyle style;
-
+    public List<string> QtNameList = [];
+    public List<string> HotkeyNameList = [];
+    public bool LockQTWindow = false;
+    public bool LockHotkeyWindow = false;
     private float userFontGlobalScale = 1.17f;
 
     // 运行状态动画相关

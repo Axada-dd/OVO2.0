@@ -96,4 +96,5 @@ public class 以太步HotkeyResolver : IHotkeyResolver
             AI.Instance.BattleData.HighPrioritySlots_OffGCD.Enqueue(slot);
         }
     }
+
 }

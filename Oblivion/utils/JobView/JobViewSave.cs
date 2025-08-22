@@ -32,7 +32,10 @@ public class JobViewSave
 
     public Dictionary<string, HotkeyConfig> QtHotkeyConfig = new(); 
 
-
+    public List<string> QtNameList = [];
+    public List<string> HotkeyNameList = [];
+    public bool LockQTWindow = false;
+    public bool LockHotkeyWindow = false;
     /// 隐藏的hotkey列表
     public List<string> HotkeyUnVisibleList = [];
 

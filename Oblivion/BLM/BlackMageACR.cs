@@ -63,7 +63,7 @@ public class BlackMageACR
         return new Rotation(SlotResolverData)
             {
                 TargetJob = Jobs.BlackMage,
-                AcrType = AcrType.HighEnd,
+                AcrType = AcrType.Both,
                 MinLevel = 70,
                 MaxLevel = 100,
                 Description = "请打开悬浮窗查看设置"
